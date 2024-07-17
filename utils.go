@@ -38,10 +38,11 @@ func NewRequest(opts []interface{}) (*Request, error) {
 		case Params:
 			request.params = opt.(Params)
 		case Proxy:
-			if opt.(Proxy)["http"] == "" && opt.(Proxy)["https"] == "" {
+			if opt.(Proxy)["http"] != "" || opt.(Proxy)["https"] != "" || opt.(Proxy)["socks5"] != "" {
+				request.Proxy = opt.(Proxy)
+			} else {
 				return nil, errors.New("proxy can not be empty")
 			}
-			request.Proxy = opt.(Proxy)
 		case []FileRequest:
 			request.Files = opt.([]FileRequest)
 		case *FileLocal:
